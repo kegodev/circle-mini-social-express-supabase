@@ -28,7 +28,7 @@ app.use('/api', requireUser);
 app.get('/api/me', async (req, res) => {
   let { data, error } = await req.db.from('social_profiles').select('*').eq('id', req.user.id).maybeSingle();
   if (!error && !data) {
-    const username = 'user_' + req.user.id.replace(/-/g, '').slice(0, 20);
+    const username = 'user_' + req.user.id.replace(/-/g, '').slice(0, 19);
     ({ data, error } = await req.db.from('social_profiles').upsert({ id: req.user.id, username }, { onConflict: 'id', ignoreDuplicates: true }).select().maybeSingle());
     if (!error && !data) ({ data, error } = await req.db.from('social_profiles').select('*').eq('id', req.user.id).single());
   }
